@@ -40,3 +40,17 @@ def two_sum(nums: list[int], target: int) -> list[int]:
         seen[nums[i]] = i
 
     return [-1, -1]
+
+def contains_nearby_duplicate(nums: list[int], k: int) -> bool:
+    seen = {}
+
+    for i in range(len(nums)):
+        num = nums[i]
+
+        if num in seen and  i - seen[num] <= k:
+            return True
+
+        seen[num] = i
+
+    return False
+
