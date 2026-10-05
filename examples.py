@@ -54,3 +54,20 @@ def contains_nearby_duplicate(nums: list[int], k: int) -> bool:
 
     return False
 
+def longest_consecutive(nums: list[int]) -> int:
+    num_set = set(nums)
+    longest = 0 
+
+    for num in nums:
+        if num - 1 not in num_set:
+            current_seq_len = 0
+            tmp_num = num
+            while tmp_num in num_set:
+                tmp_num += 1
+                current_seq_len += 1
+
+            longest = max(longest, current_seq_len)
+
+    return longest
+
+            
