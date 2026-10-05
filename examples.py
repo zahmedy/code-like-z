@@ -70,4 +70,15 @@ def longest_consecutive(nums: list[int]) -> int:
 
     return longest
 
-            
+
+def group_anagrams(words: list[str]) -> list[list[str]]:
+    anamap = {}
+
+    for word in words:
+        key = "".join(sorted(word))
+        if key not in anamap:
+            anamap[key] = [word]
+        else:
+            anamap[key].append(word)
+
+    return list(anamap.values())
