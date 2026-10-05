@@ -82,3 +82,10 @@ def group_anagrams(words: list[str]) -> list[list[str]]:
             anamap[key].append(word)
 
     return list(anamap.values())
+
+from collections import Counter
+
+def top_k_frequent(nums: list[int], k: int) -> list[int]:
+    count = Counter(nums)
+    top_ks = count.most_common(k)
+    return [top[0] for top in top_ks]
