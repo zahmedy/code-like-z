@@ -85,7 +85,21 @@ def group_anagrams(words: list[str]) -> list[list[str]]:
 
 from collections import Counter
 
-def top_k_frequent(nums: list[int], k: int) -> list[int]:
+def top_k_frequentc(nums: list[int], k: int) -> list[int]:
     count = Counter(nums)
     top_ks = count.most_common(k)
     return [top[0] for top in top_ks]
+
+import heapq
+
+def top_k_frequent(nums: list[int], k: int) -> list[int]:
+    min_heap = []
+    counts = Counter(nums)
+
+    for num, count in counts.items():
+        heapq.heappush(min_heap, (count, num))
+
+        if len(min_heap) > k:
+            heapq.heappop(min_heap)
+
+    return [num for _, num in min_heap]
