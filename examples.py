@@ -156,4 +156,18 @@ def longest_substring_without_repeating(s: str) -> int:
     return max_l
     
 
+def max_sum_subarray(nums: list[int], k: int) -> int:
+    total = sum(nums[0:k])
+    max_total = total
 
+    left = 0
+
+    for right in range(k, len(nums)):
+        total -= nums[left]
+        total += nums[right]
+
+        left += 1
+
+        max_total = max(max_total, total)
+
+    return max_total
