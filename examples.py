@@ -104,21 +104,38 @@ def top_k_frequent(nums: list[int], k: int) -> list[int]:
 
     return [num for _, num in min_heap]
 
+# def product_except_self(nums: list[int]) -> list[int]:
+#     n = len(nums)
+#     r_to_l = [0] * n
+#     r_to_l[-1] = 1
+
+#     for i in range(n - 2, -1, -1):
+#         r_to_l[i] = r_to_l[i + 1] * nums[i + 1]
+
+#     l_to_r = [0] * n
+#     l_to_r[0] = 1
+#     for i in range(1, n):
+#         l_to_r[i] = l_to_r[i - 1] * nums[i - 1]
+
+#     for i in range(n):
+#         nums[i] = l_to_r[i] * r_to_l[i]
+
+#     return nums
+
 def product_except_self(nums: list[int]) -> list[int]:
     n = len(nums)
-    r_to_l = [0] * n
-    r_to_l[-1] = 1
+    result = [0] * n
+    result[0] = 1
 
-    for i in range(n - 2, -1, -1):
-        r_to_l[i] = r_to_l[i + 1] * nums[i + 1]
-
-    l_to_r = [0] * n
-    l_to_r[0] = 1
     for i in range(1, n):
-        l_to_r[i] = l_to_r[i - 1] * nums[i - 1]
+        result[i] = nums[i - 1] * result[i - 1]
 
-    for i in range(n):
-        nums[i] = l_to_r[i] * r_to_l[i]
+    right_product = 1
+    for i in range(n - 1, -1 , -1):
+        result[i] *= right_product
+        right_product *= nums[i]
 
-    return nums
+    return result
+
+
 
