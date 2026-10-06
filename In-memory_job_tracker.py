@@ -18,3 +18,11 @@ class Job:
             self.status = new_status
         else:
             raise ValueError("Only pending, running, completed, and failed are accepted")
+
+    def retry(self):
+        if self.status != "failed":
+            raise ValueError("Only failed jobs can be retried")
+
+        self.status = self.status_transitions[self.status]
+        self.retry_count += 1
+        self.error_message = None
