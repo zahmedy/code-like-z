@@ -2,7 +2,8 @@ from dataclasses import dataclass
 
 @dataclass
 class Job:
-    job_id: int
-    status: str
-    retry_count: int
-    error_message: str
+    job_id: str
+    error_message: None | str = None
+    status: str = "pending"
+    retry_count: int = 0
+    
