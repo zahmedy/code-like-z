@@ -1,4 +1,4 @@
-from dataclasses import dataclass 
+from dataclasses import dataclass, field
 
 @dataclass
 class Job:
@@ -30,7 +30,7 @@ class Job:
 
 @dataclass
 class JobManager:
-    jobs: dict
+    jobs: dict = field(default_factory=dict)
 
     def add_job(self, job_id: str):
         if job_id in self.jobs:
