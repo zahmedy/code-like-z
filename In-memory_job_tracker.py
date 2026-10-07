@@ -43,3 +43,16 @@ class JobManager:
             return self.jobs[job_id]
         
         raise ValueError(f"Job {job_id} doesn't exist")
+
+    def update_job_status(self, job_id: str, n_status: str):
+        job = self.get_job(job_id)
+        job.update_status(n_status)
+
+    def get_jobs_by_status(self, status: str):
+        re_jobs: list[Job] = []
+
+        for job in self.jobs.values():
+            if status == job.status:
+                re_jobs.append(job)
+
+        return re_jobs
