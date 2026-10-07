@@ -37,3 +37,9 @@ class JobManager:
             raise ValueError("Error: Job already exist.")
 
         self.jobs[job_id] = Job(job_id)
+
+    def get_job(self, job_id: str):
+        if job_id in self.jobs:
+            return self.jobs[job_id]
+        
+        raise ValueError(f"Job {job_id} doesn't exist")
