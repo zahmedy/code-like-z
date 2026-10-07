@@ -2,12 +2,12 @@
 #include <string>
 #include <vector>
 
-enum status
+enum class Status
 {
-    pending,
-    running,
-    failed,
-    completed
+    Pending,
+    Running,
+    Failed,
+    Completed
 };
 
 struct Job
@@ -15,12 +15,30 @@ struct Job
     std::string job_id;
     std::string job_name;
     int retry_count;
+    Status status = Status::Pending;
 };
+
+std::string status_text(const Status status)
+{
+    switch (status)
+    {
+    case Status::Pending:
+        return "Pending";
+    case Status::Running:
+        return "Running";
+    case Status::Failed:
+        return "Failed";
+    case Status::Completed:
+        return "Completed";
+    }
+    return "Unknown";
+}
 
 void print_job(const Job &job)
 {
     std::cout << "Job " << job.job_id << ": " << job.job_name << "\n";
     std::cout << "Retries: " << job.retry_count << "\n";
+    std::cout << "Status: " << status_text(job.status) << "\n";
 }
 
 int main()
