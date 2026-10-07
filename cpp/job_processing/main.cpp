@@ -1,19 +1,25 @@
 #include <iostream>
 #include <string>
 
-void print_job(const std::string &job_id,
-               const std::string &job_name,
-               int retry_count)
+struct Job
 {
-    std::cout << "Job " << job_id << ": " << job_name << "\n";
-    std::cout << "Retries: " << retry_count << "\n";
+    std::string job_id;
+    std::string job_name;
+    int retry_count;
+};
+
+void print_job(Job job)
+{
+    std::cout << "Job " << job.job_id << ": " << job.job_name << "\n";
+    std::cout << "Retries: " << job.retry_count << "\n";
 }
 
 int main()
 {
-    std::string job_id = "job-123";
-    std::string job_name = "backup database";
-    int retry_count = 0;
-    print_job(job_id, job_name, retry_count);
+    Job job;
+    job.job_id = "job-123";
+    job.job_name = "backup database";
+    job.retry_count = 0;
+    print_job(job);
     return 0;
 }
