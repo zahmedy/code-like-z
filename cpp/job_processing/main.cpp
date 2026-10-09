@@ -16,29 +16,42 @@ struct Job
     std::string job_name;
     int retry_count;
     Status status = Status::Pending;
-};
 
-std::string status_text(const Status status)
-{
-    switch (status)
+    std::string status_text() const
     {
-    case Status::Pending:
-        return "Pending";
-    case Status::Running:
-        return "Running";
-    case Status::Failed:
-        return "Failed";
-    case Status::Completed:
-        return "Completed";
+        switch (status)
+        {
+        case Status::Pending:
+            return "Pending";
+        case Status::Running:
+            return "Running";
+        case Status::Failed:
+            return "Failed";
+        case Status::Completed:
+            return "Completed";
+        }
+        return "Unknown";
     }
-    return "Unknown";
-}
+
+    bool start()
+    {
+        if (status == Status::Pending)
+        {
+            status = Status::Running;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+};
 
 void print_job(const Job &job)
 {
     std::cout << "Job " << job.job_id << ": " << job.job_name << "\n";
     std::cout << "Retries: " << job.retry_count << "\n";
-    std::cout << "Status: " << status_text(job.status) << "\n";
+    std::cout << "Status: " << job.status_text() << "\n";
 }
 
 int main()
