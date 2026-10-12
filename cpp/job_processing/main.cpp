@@ -59,7 +59,7 @@ struct Job
     {
         return transition_to(Status::Running);
     }
-    bool completed()
+    bool complete()
     {
         return transition_to(Status::Completed);
     }
