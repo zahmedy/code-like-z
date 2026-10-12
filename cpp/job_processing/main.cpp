@@ -33,17 +33,39 @@ struct Job
         return "Unknown";
     }
 
-    bool start()
+    bool transition_to(Status new_status)
     {
-        if (status == Status::Pending)
+        switch (status)
         {
-            status = Status::Running;
-            return true;
-        }
-        else
-        {
+        case Status::Running:
+            if (new_status == Status::Completed || new_status == Status::Failed)
+            {
+                status = new_status;
+                return true;
+            }
+            return false;
+        case Status::Pending:
+            if (new_status == Status::Running)
+            {
+                status = new_status;
+                return true;
+            }
             return false;
         }
+        return false;
+    }
+
+    bool start()
+    {
+        return transition_to(Status::Running);
+    }
+    bool completed()
+    {
+        return transition_to(Status::Completed);
+    }
+    bool fail()
+    {
+        return transition_to(Status::Failed);
     }
 };
 
