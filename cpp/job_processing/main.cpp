@@ -102,5 +102,14 @@ int main()
     {
         print_job(job);
     }
+
+    auto it = jobs.find("job-124");
+
+    if (it != jobs.end())
+    {
+        it->second.start();
+        print_job(it->second);
+    }
+
     return 0;
 }
