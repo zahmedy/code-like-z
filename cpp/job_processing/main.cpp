@@ -23,8 +23,7 @@ struct Job
 
     std::string status_text() const
     {
-        Status s = get_status();
-        switch (s)
+        switch (status)
         {
         case Status::Pending:
             return "Pending";
