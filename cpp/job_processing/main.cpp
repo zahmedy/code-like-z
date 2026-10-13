@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <unordered_map>
 
 enum class Status
 {
@@ -93,14 +94,11 @@ void print_job(const Job &job)
 
 int main()
 {
-    std::vector<Job> jobs;
-    Job job1{"job-123", "backup database", 0};
-    Job job2{"job-124", "clean logs", 0};
-    Job job3{"job-125", "run worker", 0};
-    jobs.push_back(job1);
-    jobs.push_back(job2);
-    jobs.push_back(job3);
-    for (const Job &job : jobs)
+    std::unordered_map<std::string, Job> jobs;
+    jobs.try_emplace("job-123", "job-123", "backup database", 0);
+    jobs.try_emplace("job-124", "job-124", "clean logs", 0);
+    jobs.try_emplace("job-125", "job-125", "run worker", 0);
+    for (const auto &[job_id, job] : jobs)
     {
         print_job(job);
     }
