@@ -16,6 +16,13 @@ struct Job
     std::string job_name;
     int retry_count;
 
+    Job(std::string job_id, std::string job_name, int retry_count)
+        : job_id(job_id),
+          job_name(job_name),
+          retry_count(retry_count)
+    {
+    }
+
     Status get_status() const
     {
         return status;
