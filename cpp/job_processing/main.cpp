@@ -15,11 +15,16 @@ struct Job
     std::string job_id;
     std::string job_name;
     int retry_count;
-    Status status = Status::Pending;
+
+    Status get_status() const
+    {
+        return status;
+    }
 
     std::string status_text() const
     {
-        switch (status)
+        Status s = get_status();
+        switch (s)
         {
         case Status::Pending:
             return "Pending";
@@ -32,6 +37,22 @@ struct Job
         }
         return "Unknown";
     }
+
+    bool start()
+    {
+        return transition_to(Status::Running);
+    }
+    bool complete()
+    {
+        return transition_to(Status::Completed);
+    }
+    bool fail()
+    {
+        return transition_to(Status::Failed);
+    }
+
+private:
+    Status status = Status::Pending;
 
     bool transition_to(Status new_status)
     {
@@ -53,19 +74,6 @@ struct Job
             return false;
         }
         return false;
-    }
-
-    bool start()
-    {
-        return transition_to(Status::Running);
-    }
-    bool complete()
-    {
-        return transition_to(Status::Completed);
-    }
-    bool fail()
-    {
-        return transition_to(Status::Failed);
     }
 };
 
