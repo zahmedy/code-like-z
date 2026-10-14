@@ -82,6 +82,10 @@ private:
                 return true;
             }
             return false;
+        case Status::Completed:
+            return false;
+        case Status::Failed:
+            return false;
         }
         return false;
     }
@@ -180,19 +184,35 @@ int main()
                                      Job("job-124", "clean logs", 0),
                                      Job("job-125", "run worker", 0)};
 
-    for (const auto job : jobs_array)
+    for (const auto &job : jobs_array)
     {
         manager.add_job(job);
     }
 
-    const Job *job = manager.get_job("job-14");
-    if (job != nullptr)
+    std::array<std::string, 3> start_jobs = {"job-123", "job-125"};
+
+    for (const std::string &job_id : start_jobs)
     {
-        print_job(*job);
+        bool started = manager.start_job(job_id);
+        if (started == true)
+        {
+            std::cout << "Job: " << job_id << " Started\n";
+        }
     }
-    else
+
+    std::array<std::string, 3> jobs = {"job-123", "job-124", "job-125"};
+
+    for (const std::string &job_id : jobs)
     {
-        std::cout << "Job not found\n";
+        const Job *job = manager.get_job(job_id);
+        if (job != nullptr)
+        {
+            print_job(*job);
+        }
+        else
+        {
+            std::cout << "Job not found\n";
+        }
     }
 
     return 0;
