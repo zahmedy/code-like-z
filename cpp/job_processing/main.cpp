@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <array>
 #include <unordered_map>
 
 enum class Status
@@ -12,6 +13,7 @@ enum class Status
     Completed
 };
 
+// Job class/struct starts
 struct Job
 {
     std::string job_id;
@@ -84,6 +86,22 @@ private:
         return false;
     }
 };
+// Job class/struct end
+
+// JobManager class/struct start
+
+struct JobManager
+{
+    bool add_job(Job job)
+    {
+        jobs.try_emplace(job.job_id, job);
+    }
+
+private:
+    std::unordered_map<std::string, Job> jobs;
+};
+
+// JobManager class/struct end
 
 void print_job(const Job &job)
 {
@@ -94,21 +112,18 @@ void print_job(const Job &job)
 
 int main()
 {
-    std::unordered_map<std::string, Job> jobs;
-    jobs.try_emplace("job-123", "job-123", "backup database", 0);
-    jobs.try_emplace("job-124", "job-124", "clean logs", 0);
-    jobs.try_emplace("job-125", "job-125", "run worker", 0);
-    for (const auto &[job_id, job] : jobs)
+    JobManager manager;
+    std::array<Job, 3> jobs_array = {Job("job-123", "backup database", 0),
+                                     Job("job-124", "clean logs", 0),
+                                     Job("job-125", "run worker", 0)};
+
+    for (const auto &job : jobs_array)
+    {
+        manager.add_job(job);
+    }
+    for (const auto &[job_id, job] : manager.jobs)
     {
         print_job(job);
-    }
-
-    auto it = jobs.find("job-124");
-
-    if (it != jobs.end())
-    {
-        it->second.start();
-        print_job(it->second);
     }
 
     return 0;
