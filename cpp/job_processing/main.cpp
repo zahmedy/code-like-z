@@ -94,7 +94,7 @@ struct JobManager
 {
     bool add_job(Job job)
     {
-        bool added = jobs.try_emplace(job.job_id, job);
+        auto [it, added] = jobs.try_emplace(job.job_id, job);
         return added;
     }
 
@@ -118,11 +118,11 @@ private:
 
 // JobManager class/struct end
 
-void print_job(const Job *job)
+void print_job(const Job &job)
 {
-    std::cout << "Job " << job->job_id << ": " << job->job_name << "\n";
-    std::cout << "Retries: " << job->retry_count << "\n";
-    std::cout << "Status: " << job->status_text() << "\n";
+    std::cout << "Job " << job.job_id << ": " << job.job_name << "\n";
+    std::cout << "Retries: " << job.retry_count << "\n";
+    std::cout << "Status: " << job.status_text() << "\n";
 }
 
 int main()
@@ -137,8 +137,15 @@ int main()
         manager.add_job(job);
     }
 
-    const Job *job = manager.get_job("job-124");
-    print_job(job);
+    const Job *job = manager.get_job("job-14");
+    if (job != nullptr)
+    {
+        print_job(*job);
+    }
+    else
+    {
+        printf("Job not found\n");
+    }
 
     return 0;
 }
