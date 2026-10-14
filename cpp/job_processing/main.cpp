@@ -98,6 +98,20 @@ struct JobManager
         return added;
     }
 
+    Job *get_job(const std::string &job_id)
+    {
+        const auto it = jobs.find(job_id);
+
+        if (it != jobs.end())
+        {
+            return &it->second;
+        }
+        else
+        {
+            return nullptr;
+        }
+    }
+
     const Job *get_job(const std::string &job_id) const
     {
         const auto it = jobs.find(job_id);
@@ -114,36 +128,36 @@ struct JobManager
 
     bool start_job(const std::string &job_id)
     {
-        const auto it = jobs.find(job_id);
+        Job *job_ptr = get_job(job_id);
 
-        if (it == jobs.end())
+        if (job_ptr != nullptr)
         {
-            return false;
+            return job_ptr->start();
         }
 
-        return it->second.start();
+        return false;
     }
     bool complete_job(const std::string &job_id)
     {
-        const auto it = jobs.find(job_id);
+        Job *job_ptr = get_job(job_id);
 
-        if (it == jobs.end())
+        if (job_ptr != nullptr)
         {
-            return false;
+            return job_ptr->complete();
         }
 
-        return it->second.complete();
+        return false;
     }
     bool fail_job(const std::string &job_id)
     {
-        const auto it = jobs.find(job_id);
+        Job *job_ptr = get_job(job_id);
 
-        if (it == jobs.end())
+        if (job_ptr != nullptr)
         {
-            return false;
+            return job_ptr->fail();
         }
 
-        return it->second.fail();
+        return false;
     }
 
 private:
