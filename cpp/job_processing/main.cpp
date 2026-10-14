@@ -13,13 +13,6 @@ enum class Status
     Completed
 };
 
-enum class Transition
-{
-    Start,
-    Complete,
-    Fail
-};
-
 // Job class/struct starts
 struct Job
 {
@@ -66,21 +59,6 @@ struct Job
     bool fail()
     {
         return transition_to(Status::Failed);
-    }
-
-    bool update_state(Job &job, const Transition new_stat)
-    {
-        switch (new_stat)
-        {
-        case Transition::Start:
-            return job.start();
-        case Transition::Complete:
-            return job.complete();
-        case Transition::Fail:
-            return job.fail();
-        }
-
-        return false;
     }
 
 private:
@@ -132,6 +110,40 @@ struct JobManager
         {
             return nullptr;
         }
+    }
+
+    bool start_job(const std::string &job_id)
+    {
+        const auto it = jobs.find(job_id);
+
+        if (it == jobs.end())
+        {
+            return false;
+        }
+
+        return it->second.start();
+    }
+    bool complete_job(const std::string &job_id)
+    {
+        const auto it = jobs.find(job_id);
+
+        if (it == jobs.end())
+        {
+            return false;
+        }
+
+        return it->second.complete();
+    }
+    bool fail_job(const std::string &job_id)
+    {
+        const auto it = jobs.find(job_id);
+
+        if (it == jobs.end())
+        {
+            return false;
+        }
+
+        return it->second.fail();
     }
 
 private:
