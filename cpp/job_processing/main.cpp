@@ -125,6 +125,32 @@ struct JobManager
             return false;
         }
     }
+    bool start_job(const std::string &job_id)
+    {
+        const auto it = jobs.find(job_id);
+
+        if (it != jobs.end())
+        {
+            return it->second.complete();
+        }
+        else
+        {
+            return false;
+        }
+    }
+    bool start_job(const std::string &job_id)
+    {
+        const auto it = jobs.find(job_id);
+
+        if (it != jobs.end())
+        {
+            return it->second.fail();
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 private:
     std::unordered_map<std::string, Job> jobs;
