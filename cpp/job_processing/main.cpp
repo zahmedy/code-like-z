@@ -19,11 +19,13 @@ struct Job
     std::string job_id;
     std::string job_name;
     int retry_count;
+    int threshold;
 
-    Job(std::string job_id, std::string job_name, int retry_count)
+    Job(std::string job_id, std::string job_name, int retry_count, int threshold)
         : job_id(std::move(job_id)),
           job_name(std::move(job_name)),
-          retry_count(retry_count)
+          retry_count(retry_count),
+          threshold(threshold)
     {
     }
 
@@ -60,6 +62,10 @@ struct Job
     {
         return transition_to(Status::Failed);
     }
+    bool retry()
+    {
+        return transition_to(Status::Running);
+    }
 
 private:
     Status status = Status::Pending;
@@ -85,7 +91,12 @@ private:
         case Status::Completed:
             return false;
         case Status::Failed:
-            return false;
+            if (retry_count < threshold)
+            {
+                status = new_status;
+                retry_count++;
+                return true;
+            }
         }
         return false;
     }
@@ -163,6 +174,17 @@ struct JobManager
 
         return false;
     }
+    bool retry_job(const std::string &job_id)
+    {
+        Job *job_ptr = get_job(job_id);
+
+        if (job_ptr != nullptr)
+        {
+            return job_ptr->retry();
+        }
+
+        return false;
+    }
 
 private:
     std::unordered_map<std::string, Job> jobs;
@@ -180,16 +202,16 @@ void print_job(const Job &job)
 int main()
 {
     JobManager manager;
-    std::array<Job, 3> jobs_array = {Job("job-123", "backup database", 0),
-                                     Job("job-124", "clean logs", 0),
-                                     Job("job-125", "run worker", 0)};
+    std::array<Job, 3> jobs_array = {Job("job-123", "backup database", 0, 10),
+                                     Job("job-124", "clean logs", 0, 10),
+                                     Job("job-125", "run worker", 0, 10)};
 
     for (const auto &job : jobs_array)
     {
         manager.add_job(job);
     }
 
-    std::array<std::string, 3> start_jobs = {"job-123", "job-125"};
+    std::array<std::string, 3> start_jobs = {"job-123", {"job-124"}, "job-125"};
 
     for (const std::string &job_id : start_jobs)
     {
@@ -200,9 +222,48 @@ int main()
         }
     }
 
+    std::array<std::string, 3> fail_jobs = {"job-124"};
+
+    for (const std::string &job_id : fail_jobs)
+    {
+        bool failed = manager.fail_job(job_id);
+        if (failed == true)
+        {
+            std::cout << "Job: " << job_id << " failed\n";
+        }
+    }
+
     std::array<std::string, 3> jobs = {"job-123", "job-124", "job-125"};
 
     for (const std::string &job_id : jobs)
+    {
+        const Job *job = manager.get_job(job_id);
+        if (job != nullptr)
+        {
+            print_job(*job);
+        }
+        else
+        {
+            std::cout << "Job not found\n";
+        }
+    }
+
+    std::cout << "######################################\n";
+
+    std::array<std::string, 3> retry_jobs = {"job-124"};
+
+    for (const std::string &job_id : retry_jobs)
+    {
+        bool retry = manager.retry_job(job_id);
+        if (retry == true)
+        {
+            std::cout << "Job: " << job_id << " retry started\n";
+        }
+    }
+
+    std::array<std::string, 3> jobs1 = {"job-123", "job-124", "job-125"};
+
+    for (const std::string &job_id : jobs1)
     {
         const Job *job = manager.get_job(job_id);
         if (job != nullptr)
