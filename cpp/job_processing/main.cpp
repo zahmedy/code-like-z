@@ -92,7 +92,7 @@ private:
 
 struct JobManager
 {
-    bool add_job(Job &job)
+    bool add_job(Job job)
     {
         auto [it, added] = jobs.try_emplace(job.job_id, std::move(job));
         return added;
@@ -132,7 +132,7 @@ int main()
                                      Job("job-124", "clean logs", 0),
                                      Job("job-125", "run worker", 0)};
 
-    for (const auto &job : jobs_array)
+    for (const auto job : jobs_array)
     {
         manager.add_job(job);
     }
