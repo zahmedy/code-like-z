@@ -118,11 +118,11 @@ private:
 
 // JobManager class/struct end
 
-void print_job(const Job &job)
+void print_job(const Job *job)
 {
-    std::cout << "Job " << job.job_id << ": " << job.job_name << "\n";
-    std::cout << "Retries: " << job.retry_count << "\n";
-    std::cout << "Status: " << job.status_text() << "\n";
+    std::cout << "Job " << job->job_id << ": " << job->job_name << "\n";
+    std::cout << "Retries: " << job->retry_count << "\n";
+    std::cout << "Status: " << job->status_text() << "\n";
 }
 
 int main()
@@ -136,10 +136,9 @@ int main()
     {
         manager.add_job(job);
     }
-    for (const auto &[job_id, job] : manager.jobs)
-    {
-        print_job(job);
-    }
+
+    const Job *job = manager.get_job("job-124");
+    print_job(job);
 
     return 0;
 }
