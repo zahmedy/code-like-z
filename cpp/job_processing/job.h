@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 enum class Status
@@ -12,7 +14,7 @@ enum class JobResult
 {
     Success,
     JobNotFound,
-    IvalidTransaction,
+    InvalidTransition,
     RetryLimitReached
 };
 
@@ -31,10 +33,10 @@ struct Job
     JobResult fail();
     JobResult retry();
 
+    Status get_status() const;
+
 private:
     Status status = Status::Pending;
 
     JobResult transition_to(Status new_status);
 };
-
-#pragma once
