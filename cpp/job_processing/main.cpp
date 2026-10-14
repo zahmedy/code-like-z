@@ -92,9 +92,9 @@ private:
 
 struct JobManager
 {
-    bool add_job(Job job)
+    bool add_job(Job &job)
     {
-        auto [it, added] = jobs.try_emplace(job.job_id, job);
+        auto [it, added] = jobs.try_emplace(job.job_id, std::move(job));
         return added;
     }
 
@@ -144,7 +144,7 @@ int main()
     }
     else
     {
-        printf("Job not found\n");
+        std::cout << "Job not found\n";
     }
 
     return 0;
