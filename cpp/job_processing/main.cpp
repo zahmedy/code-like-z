@@ -5,14 +5,6 @@
 #include <array>
 #include <unordered_map>
 
-enum class Status
-{
-    Pending,
-    Running,
-    Failed,
-    Completed
-};
-
 // Job class/struct starts
 struct Job
 {
