@@ -10,16 +10,21 @@ enum class Status
 
 enum class JobResult
 {
-    Start,
-    complete,
-    fail,
-    retry
+    Success,
+    JobNotFound,
+    IvalidTransaction,
+    RetryLimitReached
 };
 
 struct Job
 {
+    std::string job_id;
+    std::string job_name;
+    int retry_count;
+    int threshold;
+
     Job(std::string job_id, std::string job_name,
-        int retry_count, int threashold);
+        int retry_count, int threshold);
 
     JobResult start();
     JobResult complete();
@@ -31,3 +36,5 @@ private:
 
     JobResult transition_to(Status new_status);
 };
+
+#pragma once
