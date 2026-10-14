@@ -94,7 +94,22 @@ struct JobManager
 {
     bool add_job(Job job)
     {
-        jobs.try_emplace(job.job_id, job);
+        bool added = jobs.try_emplace(job.job_id, job);
+        return added;
+    }
+
+    const Job *get_job(const std::string &job_id) const
+    {
+        const auto it = jobs.find(job_id);
+
+        if (it != jobs.end())
+        {
+            return &it->second;
+        }
+        else
+        {
+            return nullptr;
+        }
     }
 
 private:
