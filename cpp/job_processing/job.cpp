@@ -62,16 +62,19 @@ JobResult Job::transition_to(Status new_status)
     case Status::Completed:
         return JobResult::InvalidTransition;
     case Status::Failed:
-        if (retry_count < threshold)
+        if (new_status != Status::Running)
         {
-            status = new_status;
-            retry_count++;
-            return JobResult::Success;
+            return JobResult::InvalidTransition;
         }
-        else
+
+        if (retry_count >= threshold)
         {
             return JobResult::RetryLimitReached;
         }
+
+        status = Status::Running;
+        retry_count++;
+        return JobResult::Success;
     }
     return JobResult::InvalidTransition;
 }
