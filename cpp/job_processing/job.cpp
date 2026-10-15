@@ -1,4 +1,5 @@
 #include "job.h"
+#include <iostream>
 #include <utility>
 
 Job::Job(std::string job_id, std::string job_name, int retry_count, int threshold) : job_id(std::move(job_id)),

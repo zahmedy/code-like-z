@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <array>
+#include <utility>
 #include "job.h"
 #include "job_manager.h"
 
@@ -18,9 +19,9 @@ int main()
                                      Job("job-124", "clean logs", 0, 10),
                                      Job("job-125", "run worker", 0, 10)};
 
-    for (const auto &job : jobs_array)
+    for (auto &job : jobs_array)
     {
-        manager.add_job(job);
+        manager.add_job(std::move(job));
     }
 
     std::array<std::string, 3> start_jobs = {"job-123", {"job-124"}, "job-125"};
@@ -36,7 +37,7 @@ int main()
 
     std::array<std::string, 1> fail_jobs = {"job-124"};
 
-    for (const std::string &job_id : fail_jobs)
+    for (std::string &job_id : fail_jobs)
     {
         JobResult failed = manager.fail_job(job_id);
         if (failed == JobResult::Success)
@@ -47,7 +48,7 @@ int main()
 
     std::array<std::string, 3> jobs = {"job-123", "job-124", "job-125"};
 
-    for (const std::string &job_id : jobs)
+    for (std::string &job_id : jobs)
     {
         const Job *job = manager.get_job(job_id);
         if (job != nullptr)
