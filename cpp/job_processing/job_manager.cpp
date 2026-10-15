@@ -1,5 +1,5 @@
-#include "job.h"
 #include "job_manager.h"
+#include <utility>
 
 bool JobManager::add_job(Job job)
 {
@@ -35,7 +35,7 @@ const Job *JobManager::get_job(const std::string &job_id) const
     }
 }
 
-bool JobManager::start_job(const std::string &job_id)
+JobResult JobManager::start_job(const std::string &job_id)
 {
     Job *job_ptr = get_job(job_id);
 
@@ -44,9 +44,9 @@ bool JobManager::start_job(const std::string &job_id)
         return job_ptr->start();
     }
 
-    return false;
+    return JobResult::JobNotFound;
 }
-bool JobManager::complete_job(const std::string &job_id)
+JobResult JobManager::complete_job(const std::string &job_id)
 {
     Job *job_ptr = get_job(job_id);
 
@@ -55,9 +55,9 @@ bool JobManager::complete_job(const std::string &job_id)
         return job_ptr->complete();
     }
 
-    return false;
+    return JobResult::JobNotFound;
 }
-bool JobManager::fail_job(const std::string &job_id)
+JobResult JobManager::fail_job(const std::string &job_id)
 {
     Job *job_ptr = get_job(job_id);
 
@@ -66,9 +66,9 @@ bool JobManager::fail_job(const std::string &job_id)
         return job_ptr->fail();
     }
 
-    return false;
+    return JobResult::JobNotFound;
 }
-bool JobManager::retry_job(const std::string &job_id)
+JobResult JobManager::retry_job(const std::string &job_id)
 {
     Job *job_ptr = get_job(job_id);
 
@@ -77,5 +77,5 @@ bool JobManager::retry_job(const std::string &job_id)
         return job_ptr->retry();
     }
 
-    return false;
+    return JobResult::JobNotFound;
 }
