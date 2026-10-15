@@ -34,6 +34,7 @@ struct Job
     JobResult retry();
 
     Status get_status() const;
+    std::string status_text() const;
 
 private:
     Status status = Status::Pending;

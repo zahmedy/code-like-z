@@ -8,21 +8,26 @@ Job::Job(std::string job_id, std::string job_name, int retry_count, int threshol
 {
 }
 
-// std::string status_text() const
-// {
-//     switch (status)
-//     {
-//     case Status::Pending:
-//         return "Pending";
-//     case Status::Running:
-//         return "Running";
-//     case Status::Failed:
-//         return "Failed";
-//     case Status::Completed:
-//         return "Completed";
-//     }
-//     return "Unknown";
-// }
+std::string Job::status_text() const
+{
+    switch (status)
+    {
+    case Status::Pending:
+        return "Pending";
+    case Status::Running:
+        return "Running";
+    case Status::Failed:
+        return "Failed";
+    case Status::Completed:
+        return "Completed";
+    }
+    return "Unknown";
+}
+
+Status Job::get_status() const
+{
+    return status;
+}
 
 JobResult Job::start()
 {
