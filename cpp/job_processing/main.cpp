@@ -1,9 +1,6 @@
 #include <iostream>
 #include <string>
-#include <vector>
-#include <utility>
 #include <array>
-#include <unordered_map>
 #include "job.h"
 #include "job_manager.h"
 
@@ -30,8 +27,8 @@ int main()
 
     for (const std::string &job_id : start_jobs)
     {
-        bool started = manager.start_job(job_id);
-        if (started == true)
+        JobResult started = manager.start_job(job_id);
+        if (started == JobResult::Success)
         {
             std::cout << "Job: " << job_id << " Started\n";
         }
@@ -41,8 +38,8 @@ int main()
 
     for (const std::string &job_id : fail_jobs)
     {
-        bool failed = manager.fail_job(job_id);
-        if (failed == true)
+        JobResult failed = manager.fail_job(job_id);
+        if (failed == JobResult::Success)
         {
             std::cout << "Job: " << job_id << " failed\n";
         }
@@ -69,8 +66,8 @@ int main()
 
     for (const std::string &job_id : retry_jobs)
     {
-        bool retry = manager.retry_job(job_id);
-        if (retry == true)
+        JobResult retry = manager.retry_job(job_id);
+        if (retry == JobResult::Success)
         {
             std::cout << "Job: " << job_id << " retry started\n";
         }
