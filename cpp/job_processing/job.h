@@ -41,3 +41,5 @@ private:
 
     JobResult transition_to(Status new_status);
 };
+
+std::string job_result_text(JobResult result);

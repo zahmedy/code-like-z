@@ -30,7 +30,7 @@ int main()
         JobResult started = manager.start_job(job_id);
         if (started == JobResult::Success)
         {
-            std::cout << "Job: " << job_id << " Started\n";
+            std::cout << "Job: " << job_id << " Started " << job_result_text(started) << "\n";
         }
     }
 
@@ -41,7 +41,7 @@ int main()
         JobResult failed = manager.fail_job(job_id);
         if (failed == JobResult::Success)
         {
-            std::cout << "Job: " << job_id << " failed\n";
+            std::cout << "Job: " << job_id << " failed " << job_result_text(failed) << "\n";
         }
     }
 
@@ -69,7 +69,7 @@ int main()
         JobResult retry = manager.retry_job(job_id);
         if (retry == JobResult::Success)
         {
-            std::cout << "Job: " << job_id << " retry started\n";
+            std::cout << "Job: " << job_id << " retry started " << job_result_text(retry) << "\n";
         }
     }
 

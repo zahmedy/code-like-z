@@ -83,3 +83,20 @@ JobResult Job::transition_to(Status new_status)
     }
     return JobResult::InvalidTransition;
 }
+
+std::string job_result_text(JobResult result)
+{
+    switch (result)
+    {
+    case JobResult::Success:
+        return "Success";
+    case JobResult::JobNotFound:
+        return "Job not found";
+    case JobResult::InvalidTransition:
+        return "Invalid transition";
+    case JobResult::RetryLimitReached:
+        return "Retry limit reached";
+    }
+
+    return "Unknown";
+}
