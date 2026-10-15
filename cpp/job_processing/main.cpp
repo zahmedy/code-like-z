@@ -34,7 +34,7 @@ int main()
         }
     }
 
-    std::array<std::string, 3> fail_jobs = {"job-124"};
+    std::array<std::string, 1> fail_jobs = {"job-124"};
 
     for (const std::string &job_id : fail_jobs)
     {
@@ -62,7 +62,7 @@ int main()
 
     std::cout << "######################################\n";
 
-    std::array<std::string, 3> retry_jobs = {"job-124"};
+    std::array<std::string, 1> retry_jobs = {"job-124"};
 
     for (const std::string &job_id : retry_jobs)
     {
