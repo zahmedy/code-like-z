@@ -15,8 +15,8 @@ void print_job(const Job &job)
 
 int main()
 {
-    JobManager manager;
     JobLogger logger("jobs.log");
+    JobManager manager(logger);
     std::array<Job, 3> jobs_array = {Job("job-123", "backup database", 0, 10),
                                      Job("job-124", "clean logs", 0, 10),
                                      Job("job-125", "run worker", 0, 10)};
@@ -26,30 +26,21 @@ int main()
         manager.add_job(std::move(job));
     }
 
-    std::array<std::string, 3> start_jobs = {"job-123", {"job-124"}, "job-125"};
+    std::array<std::string, 4> start_jobs = {"job-123", {"job-124"}, "job-125", "job-126"};
 
     for (const std::string &job_id : start_jobs)
     {
-        JobResult started = manager.start_job(job_id);
-        if (started == JobResult::Success)
-        {
-            std::cout << "Job: " << job_id << " Started " << job_result_text(started) << "\n";
-            logger.log(job_id + " Started");
-        }
+        manager.start_job(job_id);
     }
 
-    std::array<std::string, 1> fail_jobs = {"job-124"};
+    std::array<std::string, 2> fail_jobs = {"job-124", "job-134"};
 
     for (std::string &job_id : fail_jobs)
     {
-        JobResult failed = manager.fail_job(job_id);
-        if (failed == JobResult::Success)
-        {
-            std::cout << "Job: " << job_id << " failed " << job_result_text(failed) << "\n";
-        }
+        manager.fail_job(job_id);
     }
 
-    std::array<std::string, 3> jobs = {"job-123", "job-124", "job-125"};
+    std::array<std::string, 4> jobs = {"job-123", "job-124", "job-125", "job-126"};
 
     for (std::string &job_id : jobs)
     {
@@ -66,15 +57,11 @@ int main()
 
     std::cout << "######################################\n";
 
-    std::array<std::string, 1> retry_jobs = {"job-124"};
+    std::array<std::string, 2> retry_jobs = {"job-124", "job-123"};
 
     for (const std::string &job_id : retry_jobs)
     {
-        JobResult retry = manager.retry_job(job_id);
-        if (retry == JobResult::Success)
-        {
-            std::cout << "Job: " << job_id << " retry started " << job_result_text(retry) << "\n";
-        }
+        manager.retry_job(job_id);
     }
 
     std::array<std::string, 3> jobs1 = {"job-123", "job-124", "job-125"};
