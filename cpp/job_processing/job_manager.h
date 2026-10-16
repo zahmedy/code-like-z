@@ -5,6 +5,10 @@
 #include <string>
 #include <unordered_map>
 
+struct JobExecutor
+{
+};
+
 struct JobManager
 {
     explicit JobManager(JobLogger &logger);
@@ -21,4 +25,5 @@ struct JobManager
 private:
     JobLogger &logger;
     std::unordered_map<std::string, Job> jobs;
+    std::unique_ptr<JobExecutor> job_executor;
 };
