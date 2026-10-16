@@ -4,6 +4,7 @@
 #include "job_logger.h"
 #include <string>
 #include <unordered_map>
+#include <memory>
 
 struct JobExecutor
 {
