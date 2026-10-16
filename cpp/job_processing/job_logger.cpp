@@ -6,4 +6,5 @@ JobLogger::JobLogger(const std::string &filename)
 
 void JobLogger::log(const std::string &message)
 {
+    file << message << "\n";
 }

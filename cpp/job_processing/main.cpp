@@ -4,6 +4,7 @@
 #include <utility>
 #include "job.h"
 #include "job_manager.h"
+#include "job_logger.h"
 
 void print_job(const Job &job)
 {
@@ -15,6 +16,7 @@ void print_job(const Job &job)
 int main()
 {
     JobManager manager;
+    JobLogger logger("jobs.log");
     std::array<Job, 3> jobs_array = {Job("job-123", "backup database", 0, 10),
                                      Job("job-124", "clean logs", 0, 10),
                                      Job("job-125", "run worker", 0, 10)};
@@ -32,6 +34,7 @@ int main()
         if (started == JobResult::Success)
         {
             std::cout << "Job: " << job_id << " Started " << job_result_text(started) << "\n";
+            logger.log(job_id + " Started");
         }
     }
 
