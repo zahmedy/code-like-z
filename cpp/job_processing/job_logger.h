@@ -7,7 +7,7 @@ class JobLogger
 {
 public:
     explicit JobLogger(const std::string &filename);
-    ~JobLogger();
+    void log(const std::string &message);
 
 private:
     std::ofstream file;
