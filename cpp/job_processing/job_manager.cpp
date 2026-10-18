@@ -12,7 +12,7 @@ JobManager::JobManager(
 {
 }
 
-void execute(Job &Job)
+void JobExecutor::execute(Job &Job)
 {
     std::cout << "Executing Job: " << Job.job_id << "\n";
 }
