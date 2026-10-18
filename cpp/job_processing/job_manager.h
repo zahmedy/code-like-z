@@ -12,7 +12,7 @@ struct JobExecutor
 
 struct JobManager
 {
-    explicit JobManager(JobLogger &logger);
+    explicit JobManager(JobLogger &logger, std::unique_ptr<JobExecutor> job_executor);
 
     bool add_job(Job job);
     Job *get_job(const std::string &job_id);

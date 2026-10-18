@@ -16,7 +16,8 @@ void print_job(const Job &job)
 int main()
 {
     JobLogger logger("jobs.log");
-    JobManager manager(logger);
+    auto executor = std::make_unique<JobExecutor>();
+    JobManager manager(logger, std::move(executor));
     std::array<Job, 3> jobs_array = {Job("job-123", "backup database", 0, 10),
                                      Job("job-124", "clean logs", 0, 10),
                                      Job("job-125", "run worker", 0, 10)};
