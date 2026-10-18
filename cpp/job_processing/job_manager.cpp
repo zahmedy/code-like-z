@@ -3,9 +3,11 @@
 #include "job.h"
 #include <utility>
 
-JobManager::JobManager(JobLogger &logger, std::unique_ptr<JobExecutor> job_executor)
+JobManager::JobManager(
+    JobLogger &logger,
+    std::unique_ptr<JobExecutor> executor)
     : logger(logger),
-      job_executor(std::move(job_executor))
+      job_executor(std::move(executor))
 {
 }
 
