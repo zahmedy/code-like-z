@@ -2,6 +2,7 @@
 #include "job_logger.h"
 #include "job.h"
 #include <utility>
+#include <iostream>
 
 JobManager::JobManager(
     JobLogger &logger,
@@ -9,6 +10,11 @@ JobManager::JobManager(
     : logger(logger),
       job_executor(std::move(executor))
 {
+}
+
+void execute(Job &Job)
+{
+    std::cout << "Executing Job: " << Job.job_id << "\n";
 }
 
 bool JobManager::add_job(Job job)

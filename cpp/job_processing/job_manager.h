@@ -8,6 +8,7 @@
 
 struct JobExecutor
 {
+    void execute(Job &job);
 };
 
 struct JobManager
