@@ -59,6 +59,10 @@ JobResult JobManager::start_job(const std::string &job_id)
     {
         JobResult started = job_ptr->start();
         logger.log(job_id + " start: " + job_result_text(started));
+        if (started == JobResult::Success)
+        {
+            job_executor->execute(*job_ptr);
+        }
         return started;
     }
 
