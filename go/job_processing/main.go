@@ -9,11 +9,13 @@ type Job struct {
 }
 
 func main() {
-	jobID := "job-123"
-	jobName := "backup db"
-	retryCount := 0
+	job := Job{
+		JobID:      "job-123",
+		JobName:    "backup db",
+		RetryCount: 0,
+	}
 
-	fmt.Println("Job:", jobID)
-	fmt.Println("Name:", jobName)
-	fmt.Println("Retries:", retryCount)
+	fmt.Println("Job:", job.JobID)
+	fmt.Println("Name:", job.JobName)
+	fmt.Println("Retries:", job.RetryCount)
 }
