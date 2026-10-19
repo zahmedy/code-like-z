@@ -27,7 +27,9 @@ func main() {
 		JobID:      "job-123",
 		JobName:    "backup db",
 		RetryCount: 0,
+		Status:     Pending,
 	}
 
 	job.Start()
+	fmt.Println(job.Status)
 }
