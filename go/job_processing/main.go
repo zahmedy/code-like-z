@@ -19,6 +19,10 @@ type Job struct {
 }
 
 func (j *Job) Start() {
+	if j.Status != Pending {
+		fmt.Println("Can't Start a non pending job.", j.JobID)
+	}
+	j.Status = Running
 	fmt.Println("Starting", j.JobID)
 }
 
@@ -29,7 +33,7 @@ func main() {
 		RetryCount: 0,
 		Status:     Pending,
 	}
-
+	fmt.Println(job.Status)
 	job.Start()
 	fmt.Println(job.Status)
 }
