@@ -8,6 +8,10 @@ type Job struct {
 	RetryCount int
 }
 
+func (j *Job) Start() {
+	fmt.Println("Starting", j.JobID)
+}
+
 func main() {
 	job := Job{
 		JobID:      "job-123",
@@ -15,7 +19,5 @@ func main() {
 		RetryCount: 0,
 	}
 
-	fmt.Println("Job:", job.JobID)
-	fmt.Println("Name:", job.JobName)
-	fmt.Println("Retries:", job.RetryCount)
+	job.Start()
 }
