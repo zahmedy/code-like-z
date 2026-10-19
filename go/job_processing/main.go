@@ -2,10 +2,20 @@ package main
 
 import "fmt"
 
+type Status string
+
+const (
+	Pending   Status = "pending"
+	Running   Status = "running"
+	Failed    Status = "failed"
+	Completed Status = "completed"
+)
+
 type Job struct {
 	JobID      string
 	JobName    string
 	RetryCount int
+	Status     Status
 }
 
 func (j *Job) Start() {
