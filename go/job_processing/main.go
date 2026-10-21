@@ -15,6 +15,7 @@ type Job struct {
 	JobID      string
 	JobName    string
 	RetryCount int
+	RetryLimit int
 	Status     Status
 }
 
@@ -40,6 +41,10 @@ func (j *Job) Fail() bool {
 func (j *Job) Retry() bool {
 	if j.Status != Failed {
 		fmt.Println("Only failed jobs can be retried")
+		return false
+	}
+	if j.RetryCount >= j.RetryLimit {
+		fmt.Println("Retry limit reached, can't rerun the job")
 		return false
 	}
 	j.Status = Running
