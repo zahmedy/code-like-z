@@ -30,7 +30,7 @@ func (j *Job) Start() bool {
 
 func (j *Job) Fail() bool {
 	if j.Status != Running {
-		fmt.Println("Only running process can fail")
+		fmt.Println("Only running jobs can fail")
 		return false
 	}
 	j.Status = Failed
