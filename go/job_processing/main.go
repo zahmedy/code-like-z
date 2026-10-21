@@ -19,6 +19,10 @@ type Job struct {
 	Status     Status
 }
 
+type JobManager struct {
+	Jobs map[string]*Job
+}
+
 func (j *Job) Start() bool {
 	if j.Status != Pending {
 		fmt.Println("Can't Start a non pending job.", j.JobID)
