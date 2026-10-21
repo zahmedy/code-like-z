@@ -18,12 +18,23 @@ type Job struct {
 	Status     Status
 }
 
-func (j *Job) Start() {
+func (j *Job) Start() bool {
 	if j.Status != Pending {
 		fmt.Println("Can't Start a non pending job.", j.JobID)
+		return false
 	}
 	j.Status = Running
 	fmt.Println("Starting", j.JobID)
+	return true
+}
+
+func (j *Job) Complete() bool {
+	if j.Status != Running {
+		fmt.Println("Only running process can be completed")
+		return false
+	}
+	j.Status = Completed
+	return true
 }
 
 func main() {
