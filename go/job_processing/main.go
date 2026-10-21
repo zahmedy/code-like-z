@@ -37,6 +37,16 @@ func (j *Job) Fail() bool {
 	return true
 }
 
+func (j *Job) Retry() bool {
+	if j.Status != Failed {
+		fmt.Println("Only failed jobs can be retried")
+		return false
+	}
+	j.Status = Running
+	j.RetryCount++
+	return true
+}
+
 func (j *Job) Complete() bool {
 	if j.Status != Running {
 		fmt.Println("Only running jobs can be completed")
