@@ -28,6 +28,15 @@ func (j *Job) Start() bool {
 	return true
 }
 
+func (j *Job) Fail() bool {
+	if j.Status != Running {
+		fmt.Println("Only running process can fail")
+		return false
+	}
+	j.Status = Failed
+	return true
+}
+
 func (j *Job) Complete() bool {
 	if j.Status != Running {
 		fmt.Println("Only running jobs can be completed")
