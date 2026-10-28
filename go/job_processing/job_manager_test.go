@@ -41,4 +41,10 @@ func TestJobStart(t *testing.T) {
 	if !errors.Is(err, ErrJobNotFound) {
 		t.Errorf("expected ErrJobNotFound, got %v", err)
 	}
+
+	err = jm.StartJob("job-123")
+
+	if !errors.Is(err, ErrJobCannotStart) {
+		t.Errorf("expected ErrJobCannotStart, got %v", err)
+	}
 }
