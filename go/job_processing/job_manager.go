@@ -54,3 +54,9 @@ func (jm *JobManager) StartJob(jobID string) error {
 	jm.Logger.Log("job not found")
 	return ErrJobNotFound
 }
+
+func (jm *JobManager) Worker() {
+	for job := range jm.Queue {
+		jm.Logger.Log("processing " + job.JobID)
+	}
+}
