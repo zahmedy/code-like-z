@@ -9,9 +9,15 @@ func TestGetJob(t *testing.T) {
 	j, ok := jm.GetJob("job-123")
 
 	if ok != true {
-		t.Fail()
+		t.Errorf("expected job to exist")
 	}
 	if j.JobID != "job-123" {
-		t.Fail()
+		t.Errorf("expected job-123 to exist")
+	}
+
+	_, ok = jm.GetJob("job-999")
+
+	if ok {
+		t.Errorf("expected job-99 to not exist")
 	}
 }
