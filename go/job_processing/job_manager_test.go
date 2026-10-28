@@ -38,6 +38,12 @@ func TestJobStart(t *testing.T) {
 		t.Errorf("job did not start")
 	}
 
+	queueJob := <-jm.Queue
+
+	if queueJob.JobID != "job-123" {
+		t.Errorf("job ID should be job-123")
+	}
+
 	err = jm.StartJob("job-999")
 
 	if !errors.Is(err, ErrJobNotFound) {
