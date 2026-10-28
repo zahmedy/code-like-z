@@ -4,8 +4,8 @@ import "testing"
 
 func TestGetJob(t *testing.T) {
 	jm := NewJobManager()
-	job := Job{JobID: "job-123", JobName: "Clean database"}
-	jm.AddJob(&job)
+	job := NewJob("job-123", "Clean database", 5)
+	jm.AddJob(job)
 	j, ok := jm.GetJob("job-123")
 
 	if ok != true {
@@ -24,8 +24,8 @@ func TestGetJob(t *testing.T) {
 
 func TestJobStart(t *testing.T) {
 	jm := NewJobManager()
-	job := Job{JobID: "job-123", JobName: "Clean logs", Status: Pending}
-	jm.AddJob(&job)
+	job := NewJob("job-123", "Clean database", 5)
+	jm.AddJob(job)
 
 	err := jm.StartJob("job-123")
 

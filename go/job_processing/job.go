@@ -27,7 +27,7 @@ func NewJob(jobID string, jobName string, retryLimit int) *Job {
 		JobName:    jobName,
 		RetryCount: 0,
 		RetryLimit: retryLimit,
-		Status:     Pending
+		Status:     Pending,
 	}
 }
 
