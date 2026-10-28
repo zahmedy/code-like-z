@@ -43,8 +43,10 @@ func (jm *JobManager) StartJob(jobID string) error {
 			return nil
 		}
 
+		jm.Logger.Log("job cannot start")
 		return ErrJobCannotStart
 	}
 
+	jm.Logger.Log("job not found")
 	return ErrJobNotFound
 }
