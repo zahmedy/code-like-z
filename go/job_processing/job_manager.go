@@ -15,7 +15,8 @@ var ErrJobCannotStart = errors.New("job cannot start")
 
 func NewJobManager(Logger Logger) *JobManager {
 	return &JobManager{
-		Jobs: make(map[string]*Job),
+		Jobs:   make(map[string]*Job),
+		Logger: Logger,
 	}
 }
 
