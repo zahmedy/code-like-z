@@ -33,10 +33,10 @@ func (jm *JobManager) AddJob(j *Job) bool {
 	if _, ok := jm.Jobs[j.JobID]; ok {
 		fmt.Println("Job exist, existing...")
 		return false
-	} else {
-		jm.Jobs[j.JobID] = j
-		return true
 	}
+
+	jm.Jobs[j.JobID] = j
+	return true
 }
 
 func (j *Job) Start() bool {
