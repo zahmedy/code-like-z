@@ -9,6 +9,9 @@ type JobManager struct {
 	Jobs map[string]*Job
 }
 
+var ErrJobNotFound = errors.New("job not found")
+var ErrJobCannotStart = errors.New("job cannot start")
+
 func NewJobManager() *JobManager {
 	return &JobManager{
 		Jobs: make(map[string]*Job),
@@ -39,8 +42,8 @@ func (jm *JobManager) StartJob(jobID string) error {
 			return nil
 		}
 
-		return errors.New("job will not start")
+		return ErrJobCannotStart
 	}
 
-	return errors.New("job not found")
+	return ErrJobNotFound
 }

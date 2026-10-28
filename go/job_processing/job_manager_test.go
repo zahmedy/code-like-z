@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
 func TestGetJob(t *testing.T) {
 	jm := NewJobManager()
@@ -35,7 +38,7 @@ func TestJobStart(t *testing.T) {
 
 	err = jm.StartJob("job-999")
 
-	if err == nil {
-		t.Errorf("non existing job started")
+	if !errors.Is(err, ErrJobNotFound) {
+		t.Errorf("expected ErrJobNotFound, got %v", err)
 	}
 }
