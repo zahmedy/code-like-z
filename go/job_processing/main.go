@@ -31,12 +31,20 @@ func NewJobManager() *JobManager {
 
 func (jm *JobManager) AddJob(j *Job) bool {
 	if _, ok := jm.Jobs[j.JobID]; ok {
-		fmt.Println("Job exist, existing...")
+		fmt.Println("Job exists, existing...")
 		return false
 	}
 
 	jm.Jobs[j.JobID] = j
 	return true
+}
+
+func (jm *JobManager) GetJob(jobID string) (*Job, bool) {
+	if job, ok := jm.Jobs[jobID]; ok {
+		return job, true
+	}
+
+	return nil, false
 }
 
 func (j *Job) Start() bool {
