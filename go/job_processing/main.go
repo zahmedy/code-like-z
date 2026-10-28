@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Status string
 
@@ -45,6 +48,18 @@ func (jm *JobManager) GetJob(jobID string) (*Job, bool) {
 	}
 
 	return nil, false
+}
+
+func (jm *JobManager) StartJob(jobID string) error {
+	if job, ok := jm.GetJob(jobID); ok {
+		if job.Start() {
+			return nil
+		}
+
+		return errors.New("job will not start")
+	}
+
+	return errors.New("job not found")
 }
 
 func (j *Job) Start() bool {

@@ -21,3 +21,21 @@ func TestGetJob(t *testing.T) {
 		t.Errorf("expected job-99 to not exist")
 	}
 }
+
+func TestJobStart(t *testing.T) {
+	jm := NewJobManager()
+	job := Job{JobID: "job-123", JobName: "Clean logs", Status: Pending}
+	jm.AddJob(&job)
+
+	err := jm.StartJob("job-123")
+
+	if err != nil {
+		t.Errorf("job did not start")
+	}
+
+	err = jm.StartJob("job-999")
+
+	if err == nil {
+		t.Errorf("non existing job started")
+	}
+}
