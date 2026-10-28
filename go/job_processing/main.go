@@ -23,8 +23,14 @@ type JobManager struct {
 	Jobs map[string]*Job
 }
 
-func New_manager() JobManager {
-	return JobManager{Jobs: make(map[string]*Job)}
+func NewJobManager() *JobManager {
+	return &JobManager{
+		Jobs: make(map[string]*Job),
+	}
+}
+
+func (jm *JobManager) AddJob(j *Job) bool {
+	if jm.Jobs j.JobID 
 }
 
 func (j *Job) Start() bool {
