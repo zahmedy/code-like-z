@@ -21,6 +21,16 @@ type Job struct {
 	Status     Status
 }
 
+func NewJob(jobID string, jobName string, retryLimit int) *Job {
+	return &Job{
+		JobID:      jobID,
+		JobName:    jobName,
+		RetryCount: 0,
+		RetryLimit: retryLimit,
+		Status:     Pending
+	}
+}
+
 func (j *Job) Start() bool {
 	if j.Status != Pending {
 		fmt.Println("Can't Start a non pending job.", j.JobID)
