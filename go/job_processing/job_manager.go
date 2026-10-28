@@ -5,18 +5,20 @@ import (
 	"fmt"
 )
 
-type JobManager struct {
-	Jobs   map[string]*Job
-	Logger Logger
-}
-
 var ErrJobNotFound = errors.New("job not found")
 var ErrJobCannotStart = errors.New("job cannot start")
 
-func NewJobManager(Logger Logger) *JobManager {
+type JobManager struct {
+	Jobs   map[string]*Job
+	Logger Logger
+	Queue  chan *Job
+}
+
+func NewJobManager(logger Logger) *JobManager {
 	return &JobManager{
 		Jobs:   make(map[string]*Job),
-		Logger: Logger,
+		Logger: logger,
+		Queue:  make(chan *Job, 10),
 	}
 }
 
@@ -41,6 +43,7 @@ func (jm *JobManager) GetJob(jobID string) (*Job, bool) {
 func (jm *JobManager) StartJob(jobID string) error {
 	if job, ok := jm.GetJob(jobID); ok {
 		if job.Start() {
+			jm.Queue <- job
 			return nil
 		}
 
