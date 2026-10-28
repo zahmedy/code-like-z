@@ -6,13 +6,14 @@ import (
 )
 
 type JobManager struct {
-	Jobs map[string]*Job
+	Jobs   map[string]*Job
+	Logger Logger
 }
 
 var ErrJobNotFound = errors.New("job not found")
 var ErrJobCannotStart = errors.New("job cannot start")
 
-func NewJobManager() *JobManager {
+func NewJobManager(Logger Logger) *JobManager {
 	return &JobManager{
 		Jobs: make(map[string]*Job),
 	}
