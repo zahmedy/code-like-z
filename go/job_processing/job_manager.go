@@ -74,6 +74,7 @@ func (jm *JobManager) Worker(ctx context.Context, workerID int) {
 			}
 			select {
 			case <-time.After(1 * time.Second):
+				busyWork()
 				jm.Logger.Log("finished " + job.JobID)
 
 			case <-ctx.Done():

@@ -2,11 +2,24 @@ package main
 
 import (
 	"context"
+	"os"
+	"runtime/pprof"
 	"sync"
 	"time"
 )
 
 func main() {
+	f, err := os.Create("cpu.prof")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
+
+	if err := pprof.StartCPUProfile(f); err != nil {
+		panic(err)
+	}
+	defer pprof.StopCPUProfile()
+
 	job1 := NewJob("job-123", "clean db", 5)
 	job2 := NewJob("job-124", "backup db", 5)
 	job3 := NewJob("job-125", "rotate logs", 5)
@@ -18,7 +31,7 @@ func main() {
 	jm.AddJob(job2)
 	jm.AddJob(job3)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
 	for i := 1; i <= 3; i++ {
 		wg.Add(1)
