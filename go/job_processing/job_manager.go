@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"time"
 )
 
 var ErrJobNotFound = errors.New("job not found")
@@ -55,8 +57,24 @@ func (jm *JobManager) StartJob(jobID string) error {
 	return ErrJobNotFound
 }
 
-func (jm *JobManager) Worker() {
-	for job := range jm.Queue {
-		jm.Logger.Log("processing " + job.JobID)
+func (jm *JobManager) Worker(ctx context.Context, workerID int) {
+	for {
+		select {
+		case job, ok := <-jm.Queue:
+			if !ok {
+				return
+			}
+			select {
+			case <-time.After(2 * time.Second):
+				jm.Logger.Log("finished " + job.JobID)
+
+			case <-ctx.Done():
+				jm.Logger.Log("cancelled " + job.JobID)
+				return
+			}
+		case <-ctx.Done():
+			jm.Logger.Log("worker stopping")
+			return
+		}
 	}
 }
