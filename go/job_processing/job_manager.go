@@ -27,6 +27,9 @@ func NewJobManager(logger Logger) *JobManager {
 }
 
 func (jm *JobManager) AddJob(j *Job) bool {
+	jm.mu.Lock()
+	defer jm.mu.Unlock()
+
 	if _, ok := jm.Jobs[j.JobID]; ok {
 		fmt.Println("Job exists, existing...")
 		return false
