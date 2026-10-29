@@ -40,6 +40,9 @@ func (jm *JobManager) AddJob(j *Job) bool {
 }
 
 func (jm *JobManager) GetJob(jobID string) (*Job, bool) {
+	jm.mu.RLock()
+	defer jm.mu.RUnlock()
+
 	if job, ok := jm.Jobs[jobID]; ok {
 		return job, true
 	}
