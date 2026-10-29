@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -14,6 +15,7 @@ type JobManager struct {
 	Jobs   map[string]*Job
 	Logger Logger
 	Queue  chan *Job
+	mu     sync.RWMutex
 }
 
 func NewJobManager(logger Logger) *JobManager {
@@ -65,14 +67,16 @@ func (jm *JobManager) Worker(ctx context.Context, workerID int) {
 				return
 			}
 			select {
-			case <-time.After(2 * time.Second):
+			case <-time.After(1 * time.Second):
 				jm.Logger.Log("finished " + job.JobID)
 
 			case <-ctx.Done():
+				fmt.Println(ctx.Err())
 				jm.Logger.Log("cancelled " + job.JobID)
 				return
 			}
 		case <-ctx.Done():
+			fmt.Println(ctx.Err())
 			jm.Logger.Log("worker stopping")
 			return
 		}

@@ -2,6 +2,8 @@ package main
 
 import (
 	"errors"
+	"fmt"
+	"sync"
 	"testing"
 )
 
@@ -84,4 +86,35 @@ func TestStartJobWithMissingJob(t *testing.T) {
 			logger.Messages[0],
 		)
 	}
+}
+
+func TestJobManagerRace(t *testing.T) {
+	logger := &TestLogger{}
+	jm := NewJobManager(logger)
+
+	var wg sync.WaitGroup
+
+	for i := 1; i < 100; i++ {
+		wg.Add(2)
+
+		go func(i int) {
+			defer wg.Done()
+
+			job := NewJob(
+				fmt.Sprintf("job-%d", i),
+				"test job",
+				3,
+			)
+
+			jm.AddJob(job)
+		}(i)
+
+		go func(i int) {
+			defer wg.Done()
+
+			jm.GetJob(fmt.Sprintf("job-%d", i))
+		}(i)
+	}
+
+	wg.Wait()
 }
